@@ -15,17 +15,17 @@ function t(t,e,s,i){var r,n=arguments.length,a=n<3?e:null===i?i=Object.getOwnPro
                 .min=${e.min}
                 .max=${e.max}
                 .step=${e.step}
-                .value=${e.value}
+                .value=${this._config.inverted?100-e.value:e.value}
                 .dir=${s}
                 pin
-                @change=${t=>e.value=this.shadowRoot.querySelector("ha-slider").value}
+                @change=${t=>{let v=this._config.inverted?100-this.shadowRoot.querySelector("ha-slider").value:this.shadowRoot.querySelector("ha-slider").value;e.value=v}}
                 class=${this._config.full_row||this._config.grow?"full":""}
                 ignore-bar-touch
               ></ha-slider>
             `:""}
         ${r?e.renderToggle(this.hass):""}
         ${n?T`<span class="state">
-              ${"unavailable"===e.stateObj.state?this.hass.localize("state.default.unavailable"):e.string}
+              ${"unavailable"===e.stateObj.state?this.hass.localize("state.default.unavailable"):(this._config.inverted?(()=>{let m=/[0-9]{1,2}/.exec(e.string)||[];return m.length?e.string.replace(m[0],100-e.value):e.string})():e.string)}
             </span>`:""}
       </div>
     `;return this._config.full_row?this._config.hide_when_off&&e.isOff?T``:a:T`

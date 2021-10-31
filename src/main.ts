@@ -77,13 +77,15 @@ class SliderEntityRow extends LitElement {
                 .min=${c.min}
                 .max=${c.max}
                 .step=${c.step}
-                .value=${c.value}
+                .value=${this._config.inverted ? 100 - c.value : c.value}
                 .dir=${dir}
                 pin
-                @change=${(ev) =>
-                  (c.value = (
-                    this.shadowRoot.querySelector("ha-slider") as any
-                  ).value)}
+                @change=${(ev) => {
+                  let target = this._config.inverted ?
+                    100 - this.shadowRoot.querySelector("ha-slider").value :
+                    this.shadowRoot.querySelector("ha-slider").value;
+                  c.value = target
+                }}
                 class=${this._config.full_row || this._config.grow
                   ? "full"
                   : ""}
@@ -96,7 +98,18 @@ class SliderEntityRow extends LitElement {
           ? html`<span class="state">
               ${c.stateObj.state === "unavailable"
                 ? this.hass.localize("state.default.unavailable")
-                : c.string}
+                : (
+                  ${this._config.inverted ?
+                    (() => {
+                      let matches = /[0-9]{1,2}/.exec(c.string) || [];
+                      if (!matches.length) {
+                        return c.string;
+                      }
+                      return c.string.replace(matches[0], 100 - c.value);
+                    })() :
+                    c.string
+                  }
+                )}
             </span>`
           : ""}
       </div>
