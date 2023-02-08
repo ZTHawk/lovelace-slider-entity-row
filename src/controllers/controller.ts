@@ -1,4 +1,4 @@
-import { html } from "lit-element";
+import { html } from "lit";
 
 export interface ControllerConfig {
   entity: string;
@@ -12,6 +12,8 @@ export interface ControllerConfig {
   attribute?: string;
   grow?: boolean;
   dir?: string;
+  colorize?: boolean;
+  show_icon?: boolean;
 }
 
 export abstract class Controller {
@@ -52,6 +54,10 @@ export abstract class Controller {
   }
   get hasToggle(): boolean {
     return true;
+  }
+
+  get background(): string | undefined {
+    return undefined;
   }
 
   renderToggle(hass: any) {
