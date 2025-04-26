@@ -116,7 +116,7 @@ class SliderEntityRow extends LitElement {
                 .min=${c.min}
                 .max=${c.max}
                 .step=${c.step}
-                .value=${this._config.inverted ? c.max + c.min - c.value : c.value}
+                .value=${this._config.inverted ? (c.max + c.min - c.value) : c.value}
                 .dir=${dir}
                 labeled
                 pin
