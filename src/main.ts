@@ -116,14 +116,14 @@ class SliderEntityRow extends LitElement {
                 .min=${c.min}
                 .max=${c.max}
                 .step=${c.step}
-                .value=${this._config.inverted ? 100 - c.value : c.value}
+                .value=${this._config.inverted ? c.max + c.min - c.value : c.value}
                 .dir=${dir}
                 labeled
                 pin
                 @change=${(ev) => {
                   let target = this.shadowRoot.querySelector("ha-slider") as any
                   if ( this._config.inverted )
-                    target = 100 - target;
+                    target = c.max + c.min - target;
                   c.value = target
                 }}
                 class=${this._config.full_row || this._config.grow
@@ -141,11 +141,11 @@ class SliderEntityRow extends LitElement {
                 : (
                   this._config.inverted ?
                     (() => {
-                      let matches = /[0-9]{1,2}/.exec(c.string) || [];
+                      let matches = /[0-9]{1,2}(\.[0-9])?/.exec(c.string) || [];
                       if (!matches.length) {
                         return c.string;
                       }
-                      return c.string.replace(matches[0], (100 - c.value).toString());
+                      return c.string.replace(matches[0], (c.max + c.min - c.value).toString());
                     })() :
                     c.string
                 )}
