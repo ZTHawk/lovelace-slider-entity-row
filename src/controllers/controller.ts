@@ -26,7 +26,9 @@ export abstract class Controller {
   abstract _max?: number;
   abstract _step?: number;
 
-  constructor(config: ControllerConfig) {
+  static allowed_attributes = [];
+
+  constructor(config: ControllerConfig, parent) {
     this._config = config;
   }
 
