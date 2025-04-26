@@ -121,9 +121,9 @@ class SliderEntityRow extends LitElement {
                 labeled
                 pin
                 @change=${(ev) => {
-                  let target = this._config.inverted ?
-                    100 - this.shadowRoot.querySelector("ha-slider").value :
-                    this.shadowRoot.querySelector("ha-slider").value;
+                  let target = this.shadowRoot.querySelector("ha-slider") as any
+                  if ( this._config.inverted )
+                    target = 100 - target;
                   c.value = target
                 }}
                 class=${this._config.full_row || this._config.grow
@@ -139,16 +139,15 @@ class SliderEntityRow extends LitElement {
               ${c.stateObj.state === "unavailable"
                 ? this.hass.localize("state.default.unavailable")
                 : (
-                  ${this._config.inverted ?
+                  this._config.inverted ?
                     (() => {
                       let matches = /[0-9]{1,2}/.exec(c.string) || [];
                       if (!matches.length) {
                         return c.string;
                       }
-                      return c.string.replace(matches[0], 100 - c.value);
+                      return c.string.replace(matches[0], (100 - c.value).toString());
                     })() :
                     c.string
-                  }
                 )}
             </span>`
           : ""}
