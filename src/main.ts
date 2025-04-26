@@ -121,7 +121,7 @@ class SliderEntityRow extends LitElement {
                 labeled
                 pin
                 @change=${(ev) => {
-                  let target = this.shadowRoot.querySelector("ha-slider") as any
+                  let target = (this.shadowRoot.querySelector("ha-slider") as any).value
                   if ( this._config.inverted )
                     target = c.max + c.min - target;
                   c.value = target
